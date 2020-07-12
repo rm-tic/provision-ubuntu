@@ -131,24 +131,14 @@ function CLONE_REPO()
 	echo
 }
 
-function ENABLE_VENV()
-{
-  source "$REPO_DIR/.venv/bin/activate"
-}
-
-function DISABLE_VENV()
-{
-  deactivate
-}
-
 function SETUP_VENV()
 {
 
   python3 -m venv $REPO_DIR/.venv
-  ENABLE_VENV
+  source "$REPO_DIR/.venv/bin/activate"
   python3 -m pip install --upgrade pip > /dev/null 2>&1
   python3 -m pip install ansible > /dev/null 2>&1
-  DISABLE_VENV
+  deactivate
 
 }
 
@@ -158,8 +148,8 @@ function EXEC_ANSIBLE()
 	echo "Starting Playbook..."
 	echo
 	
-  ENABLE_VENV
-	sudo ansible-playbook -i $REPO_DIR/hosts $REPO_DIR/main.yml
+  source "$REPO_DIR/.venv/bin/activate"
+  sudo ansible-playbook -i $REPO_DIR/hosts $REPO_DIR/main.yml
 }
 
 function MAIN()
