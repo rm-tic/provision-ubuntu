@@ -131,6 +131,16 @@ function CLONE_REPO()
 	echo
 }
 
+function ENABLE_VENV()
+{
+  source "$REPO_DIR/.venv/bin/activate"
+}
+
+function DISABLE_VENV()
+{
+  deactivate
+}
+
 function SETUP_VENV()
 {
 
@@ -140,16 +150,6 @@ function SETUP_VENV()
   python3 -m pip install ansible > /dev/null 2>&1
   DISABLE_VENV
 
-}
-
-function ENABLE_VENV()
-{
-  source "$REPO_DIR/.venv/bin/active"
-}
-
-function DISABLE_VENV()
-{
-  deactivate
 }
 
 function EXEC_ANSIBLE()
