@@ -26,7 +26,6 @@ function GTERM_LOAD()
 
 }
 
-
 function CHECK_INSTALL()
 {
 
@@ -56,17 +55,29 @@ function APT_UPDATE()
 
 }
 
-
 function INSTALL()
 {
 
 	GIT_STATUS="$(CHECK_INSTALL git)"
 	PYTHON3_VENV_STATUS="$(CHECK_INSTALL python3-venv)"
   PYTHON3_PIP_STATUS="$(CHECK_INSTALL python3-pip)"
+  CURL_STATUS="$(CHECK_INSTALL curl)"
 
 	echo "Installing Essential Packages..."
 	echo
 
+
+	if [ "$CURL_STATUS" = "absent" ]; then
+
+    APT_UPDATE
+    sudo apt-get install -y curl > /dev/null 2>&1
+		echo ">> curl installed."
+
+	else
+
+		echo ">> curl is already installed."
+
+	fi
 
 	if [ "$PYTHON3_VENV_STATUS" = "absent" ]; then
 
@@ -104,11 +115,9 @@ function INSTALL()
 
 	fi
 
-
 	echo
 
 }
-
 
 function CLONE_REPO()
 {
@@ -143,7 +152,6 @@ function SETUP_VENV()
 
 }
 
-
 function EXEC_ANSIBLE()
 {
 	echo
@@ -153,7 +161,6 @@ function EXEC_ANSIBLE()
   ENABLE_VENV
 	sudo ansible-playbook -i $REPO_DIR/hosts $REPO_DIR/main.yml
 }
-
 
 function MAIN()
 {
@@ -176,5 +183,6 @@ SETUP_VENV
 EXEC_ANSIBLE
 
 }
+
 
 MAIN
