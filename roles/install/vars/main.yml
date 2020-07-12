@@ -1,0 +1,60 @@
+---
+# vars file for install
+
+apt_key_urls:
+  - https://dl.google.com/linux/linux_signing_key.pub #GoogleChrome
+  - https://www.virtualbox.org/download/oracle_vbox_2016.asc #VirtualBox
+  - https://apt.enpass.io/keys/enpass-linux.key #Enpass 
+ 
+apt_repo_urls:
+  - url: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main #GoogleChrome
+    filename: google-chrome
+  - url: deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian focal contrib #VirtualBox
+    filename: virtualbox
+  - url: deb https://apt.enpass.io/ stable main #Enpass
+    filename: enpass
+
+apt_repo_ppa:
+  - url: ppa:stebbins/handbrake-releases #Handbrake
+    filename: ppa_handbrake
+  - url: ppa:graphics-drivers/ppa #NvidiaDrivers
+    filename: ppa_graphics
+  - url: ppa:sebastian-stenzel/cryptomator #Cryptomator
+    filename: cryptomator
+    
+pkgs_urls:
+  - "{{ url_deb_autokey.stdout_lines[0] }}" #AutoKey
+  - "{{ url_deb_autokey.stdout_lines[1] }}" #AutoKey
+  - "{{ url_deb_etcher.stdout }}" #BalenaEtcher
+  - https://download.teamviewer.com/download/linux/teamviewer_amd64.deb #TeamViewer
+  - "{{ url_deb_vagrant.stdout }}" #Vagrant
+  - "{{ url_deb_franz.stdout }}" #Franz
+  - http://wdl1.pcfg.cache.wpscdn.com/wpsdl/wpsoffice/download/linux/9604/wps-office_11.1.0.9604.XA_amd64.deb #WPSOffice
+
+pkgs:
+  - awscli
+  - build-essential
+  - cryptomator
+  - enpass
+  - flameshot
+  - google-chrome-stable
+  - gparted
+  - handbrake-cli
+  - handbrake-gtk
+  - htop
+  - intel-microcode
+  - jq
+  - openssh-server
+  - p7zip-full
+  - p7zip-rar
+  - peek
+  - qbittorrent
+  - remmina
+  - remmina-plugin-rdp
+  - remmina-plugin-vnc
+  - tmux
+  - uget
+  - vim
+  - virtualbox-6.1
+  - xclip
+  - zsh
