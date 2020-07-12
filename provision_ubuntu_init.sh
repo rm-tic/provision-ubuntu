@@ -121,7 +121,7 @@ function INSTALL()
 
 function CLONE_REPO()
 {
-	REPO_DIR="/tmp/$$/provision-ubuntu"
+	REPO_DIR="/tmp/provision-ubuntu"
 	REPO_URL="https://github.com/rm-tic/provision-ubuntu.git"
 
 	echo "Cloning Repository in $REPO_DIR"
@@ -133,7 +133,7 @@ function CLONE_REPO()
 
 function ENABLE_VENV()
 {
-  source $REPO_DIR/.venv/bin/active
+  source "$REPO_DIR/.venv/bin/active"
 }
 
 function DISABLE_VENV()
