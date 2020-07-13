@@ -28,6 +28,7 @@
   shell: >
     [ "$(dpkg-query -W -f='${db:Status-Abbrev}' docker-ce 2>/dev/null | cut -c1-2)" = "ii" ] ; echo "$?"
   register: docker_is_installed
+  tags: docker
 
 - name: Install Docker
   shell: >
@@ -35,19 +36,25 @@
   args:
     warn: no
   when: docker_is_installed.stdout != 0
-  tags: pkgs_install
+  tags: docker
+
+- name: Teste
+  apt:
+    name: zsh
+    state: latest
+  tags: zsh
 
 - name: Install Oh My Zsh!
   shell: >
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
   become: no
-  tags: ohmyzsh_install
+  tags: zsh
   
 - name: Change Default SHELL to ZSH
   user:
     name: "{{ ansible_env.SUDO_USER }}"
     shell: /usr/bin/zsh
-  tags: ohmyzsh_install
+  tags: zsh
 
 - name: Install VSCode
   snap:
