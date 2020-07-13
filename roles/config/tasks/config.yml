@@ -1,10 +1,9 @@
 ---
-
 - name: Add Custom Config in .zshrc and .bashrc
   blockinfile:
-    path: "/home/{{ user }}/{{ item }}"
-    owner: "{{ user }}"
-    group: "{{ user }}"
+    path: "{{ ansible_env.HOME }}/{{ item }}"
+    owner: "{{ ansible_env.SUDO_USER }}"
+    group: "{{ ansible_env.SUDO_USER }}"
     mode: 0644
     backup: yes
     insertafter: EOF
@@ -57,9 +56,9 @@
 - name: Copy Config Files .vimrc and .tmux.conf to HOME
   copy:
     src: "./{{ item }}"
-    dest: "/home/{{ user }}/{{ item }}"
-    owner: "{{ user }}"
-    group: "{{ user }}"
+    dest: "{{ ansible_env.HOME }}/{{ item }}"
+    owner: "{{ ansible_env.SUDO_USER }}"
+    group: "{{ ansible_env.SUDO_USER }}"
     mode: 0644
   loop:
     - .tmux.conf
@@ -67,18 +66,18 @@
 
 - name: Create Directory Wallpaper
   file:
-    path: "/home/{{ user }}/Imagens/Wallpapers"
-    owner: "{{ user }}"
-    group: "{{ user }}"
+    path: "{{ ansible_env.HOME }}/Imagens/Wallpapers"
+    owner: "{{ ansible_env.SUDO_USER }}"
+    group: "{{ ansible_env.SUDO_USER }}"
     mode: 0755
     state: directory
 
 - name: Copy Pictures to ~/Imagens/Wallpapers
   copy:
     src: "./{{ item }}"
-    dest: "/home/{{ user }}/Imagens/Wallpapers/{{ item }}"
-    owner: "{{ user }}"
-    group: "{{ user }}"
+    dest: "{{ ansible_env.HOME }}/Imagens/Wallpapers/{{ item }}"
+    owner: "{{ ansible_env.SUDO_USER }}"
+    group: "{{ ansible_env.SUDO_USER }}"
     mode: 0644
   loop:
     - root_2560x1080.png
@@ -89,7 +88,7 @@
     key: "{{ item.key }}"
     value: "{{ item.value }}"
     state: present
-  become_user: "{{ user }}"
+  become_user: "{{ ansible_env.SUDO_USER }}"
   loop: "{{ theme_cfg }}"
   tags: install_themes
 

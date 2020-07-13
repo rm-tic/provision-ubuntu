@@ -40,18 +40,12 @@
 - name: Install Oh My Zsh!
   shell: >
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  become: no
   tags: ohmyzsh_install
-
-- name: Copy ZSH Template for ~/.zshrc
-  copy:
-    src: "/home/{{ user }}/.oh-my-zsh/templates/zshrc.zsh-template"
-    dest: "/home/{{ user }}/.zshrc"
-    remote_src: yes
-  tags: ohmyzsh_install
-
+  
 - name: Change Default SHELL to ZSH
   user:
-    name: "{{ user }}"
+    name: "{{ ansible_env.SUDO_USER }}"
     shell: /usr/bin/zsh
   tags: ohmyzsh_install
 

@@ -150,9 +150,13 @@ function CREATE_VENV()
   python3 -m venv "$REPO_DIR/.venv"
 }
 
+function ENABLE_VENV()
+{
+	. "$REPO_DIR/.venv/bin/activate"
+}
+
 function SETUP_VENV()
 {
-  . "$REPO_DIR/.venv/bin/activate"
   python3 -m pip install --upgrade pip > /dev/null 2>&1
   python3 -m pip install ansible > /dev/null 2>&1
 }
@@ -162,8 +166,7 @@ function EXEC_ANSIBLE()
 	echo
 	echo "Starting Playbook..."
 	echo
-
-  sudo bash -c '. '$REPO_DIR/.venv/bin/activate' && ansible-playbook -i '$REPO_DIR/hosts' '$REPO_DIR/main.yml' -e 'user=$PLAY_USER''
+  ansible-playbook -i "$REPO_DIR/hosts" "$REPO_DIR/main.yml"
 }
 
 function MAIN()
@@ -184,6 +187,7 @@ GTERM_LOAD
 INSTALL
 CLONE_REPO
 CREATE_VENV
+ENABLE_VENV
 SETUP_VENV
 EXEC_ANSIBLE
 

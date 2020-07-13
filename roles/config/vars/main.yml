@@ -2,4 +2,4 @@
 # vars file for config
 theme_cfg:
 - key: /org/gnome/desktop/background/picture-uri #Wallpaper
-  value: "'file:///home/{{ user }}/Imagens/Wallpapers/root_2560x1080.png'"
+  value: "'file://{{ ansible_env.HOME }}/Imagens/Wallpapers/root_2560x1080.png'"
