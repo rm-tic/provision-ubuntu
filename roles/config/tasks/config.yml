@@ -50,18 +50,28 @@
 
       ss() { /bin/ss $@ | column -t ;}
 
-  loop: "{{ shell_cfg }}"
-  tags: config_files
+  loop:
+    - .bashrc
+    - .zshrc
 
 - name: Copy Config Files .vimrc and .tmux.conf to HOME
   copy:
     src: "./{{ item }}"
-    dest: "{{ ansible_env.HOME }}"
+    dest: "{{ ansible_env.HOME }}/{{ item }}"
     owner: "{{ ansible_env.SUDO_USER }}"
     group: "{{ ansible_env.SUDO_USER }}"
     mode: 0644
-  loop: "{{ file_cfg }}"
-  tags: config_files
+  loop:
+    - .tmux.conf
+    - .vimrc
+
+- name: Create Directory Wallpaper
+  file:
+    path: "{{ ansible_env.HOME }}/Imagens/Wallpapers"
+    owner: "{{ ansible_env.SUDO_USER }}"
+    group: "{{ ansible_env.SUDO_USER }}"
+    mode: 0755
+    state: directory
 
 - name: Copy Pictures to ~/Imagens/Wallpapers
   copy:
@@ -70,8 +80,19 @@
     owner: "{{ ansible_env.SUDO_USER }}"
     group: "{{ ansible_env.SUDO_USER }}"
     mode: 0644
-  loop: "{{ pics }}"
+  loop:
+    - root_2560x1080.png
+    - root_1920x1080.png
 
-- name: Reboot Machine
-  shell: shutdown -r +0
+- name: Apply Theme
+  dconf:
+    key: "{{ item.key }}"
+    value: "{{ item.value }}"
+    state: present
+  become_user: "{{ ansible_env.SUDO_USER }}"
+  loop: "{{ theme_cfg }}"
+  tags: install_themes
+
+#- name: Reboot Machine
+  #shell: shutdown -r +0
   

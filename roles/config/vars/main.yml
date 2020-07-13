@@ -1,18 +1,5 @@
 ---
 # vars file for config
-
-shell_cfg:
-  - .bashrc
-  - .zshrc
-
-file_cfg:
-  - .vimrc
-  - .tmux.conf
-
-pics:
-  - root_1920x1080.png
-  - root_2560x1080.png
-
 theme_cfg:
-- key: /org/cinnamon/desktop/background/picture-uri #Wallpaper
+- key: /org/gnome/desktop/background/picture-uri #Wallpaper
   value: "'file://{{ ansible_env.HOME }}/Imagens/Wallpapers/root_2560x1080.png'"

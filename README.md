@@ -18,9 +18,6 @@ Esta receita provisiona uma estação de trabalho recém formatada com Ubuntu 20
 
 **SHELL**
 ```bash
-#CURL
-curl -fsSL https://raw.githubusercontent.com/rm-tic/provision-ubuntu/master/provision_ubuntu_init.sh | bash -
-
 #WGET
 wget -qO- https://raw.githubusercontent.com/rm-tic/provision-ubuntu/master/provision_ubuntu_init.sh | bash -
 

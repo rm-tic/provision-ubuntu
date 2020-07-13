@@ -34,6 +34,7 @@ pkgs_urls:
 pkgs:
   - awscli
   - build-essential
+  - calibre
   - cryptomator
   - enpass
   - flameshot

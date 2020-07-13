@@ -55,6 +55,13 @@
     classic: yes
   tags: code
 
+- name: Install Foliate
+  snap:
+    name: foliate
+    state: present
+    channel: stable
+  tags: foliate
+
 - name: Install Heimer
   snap:
     name: heimer
