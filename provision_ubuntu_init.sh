@@ -6,14 +6,14 @@ function GTERM_LOAD()
 {
 	GTERM_DIR="$HOME/.gterm"
 	GTERM_FILE="$GTERM_DIR/gterm-profile.dconf"
-  GTERM_RC="$GTERM_DIR/gterm.rc"
+  	GTERM_RC="$GTERM_DIR/gterm.rc"
 	GTERM_URL="https://raw.githubusercontent.com/rm-tic/provision-ubuntu/master/gterm-profile.dconf"
 
 
 	if [[ ! -d $GTERM_DIR  || "$(cat $GTERM_RC)" != "0" ]]; then
 
 		mkdir $GTERM_DIR
-    echo "0" > $GTERM_RC
+    	echo "0" > $GTERM_RC
 
 		wget -qO $GTERM_FILE $GTERM_URL
 
@@ -61,9 +61,9 @@ function INSTALL()
 
 	GIT_STATUS="$(CHECK_INSTALL git)"
 	PYTHON3_VENV_STATUS="$(CHECK_INSTALL python3-venv)"
-  PYTHON3_PSUTIL_STATUS="$(CHECK_INSTALL python3-psutil)"
-  PYTHON3_PIP_STATUS="$(CHECK_INSTALL python3-pip)"
-  CURL_STATUS="$(CHECK_INSTALL curl)"
+  	PYTHON3_PSUTIL_STATUS="$(CHECK_INSTALL python3-psutil)"
+  	PYTHON3_PIP_STATUS="$(CHECK_INSTALL python3-pip)"
+  	CURL_STATUS="$(CHECK_INSTALL curl)"
 
 	echo "Installing Essential Packages..."
 	echo
@@ -83,8 +83,8 @@ function INSTALL()
 
 	if [ "$PYTHON3_VENV_STATUS" = "absent" ]; then
 
-    APT_UPDATE
-    sudo apt-get install -y python3-venv > /dev/null 2>&1
+    	APT_UPDATE
+    	sudo apt-get install -y python3-venv > /dev/null 2>&1
 		echo ">> python3-venv installed."
 
 	else
@@ -95,8 +95,8 @@ function INSTALL()
 
 	if [ "$PYTHON3_PSUTIL_STATUS" = "absent" ]; then
 
-    APT_UPDATE
-    sudo apt-get install -y python3-psutil > /dev/null 2>&1
+    	APT_UPDATE
+    	sudo apt-get install -y python3-psutil > /dev/null 2>&1
 		echo ">> python3-psutil installed."
 
 	else
@@ -107,8 +107,8 @@ function INSTALL()
 
   if [ "$PYTHON3_PIP_STATUS" = "absent" ]; then
 
-    APT_UPDATE
-    sudo apt-get install -y python3-pip > /dev/null 2>&1
+    	APT_UPDATE
+    	sudo apt-get install -y python3-pip > /dev/null 2>&1
 		echo ">> python3-pip installed."
 
 	else
@@ -120,7 +120,7 @@ function INSTALL()
 	if [ "$GIT_STATUS" = "absent" ]; then
 
 		APT_UPDATE
-    sudo apt-get install -y git > /dev/null 2>&1
+    	sudo apt-get install -y git > /dev/null 2>&1
 		echo ">> Git v$(git --version | awk '{print $3}') installed."
 
 	else
@@ -147,7 +147,7 @@ function CLONE_REPO()
 
 function CREATE_VENV()
 {
-  python3 -m venv "$REPO_DIR/.venv"
+	python3 -m venv "$REPO_DIR/.venv"
 }
 
 function ENABLE_VENV()
@@ -157,8 +157,8 @@ function ENABLE_VENV()
 
 function SETUP_VENV()
 {
-  python3 -m pip install --upgrade pip > /dev/null 2>&1
-  python3 -m pip install ansible > /dev/null 2>&1
+	python3 -m pip install --upgrade pip > /dev/null 2>&1
+	python3 -m pip install ansible > /dev/null 2>&1
 }
 
 function EXEC_ANSIBLE()
@@ -166,7 +166,7 @@ function EXEC_ANSIBLE()
 	echo
 	echo "Starting Playbook..."
 	echo
-  ansible-playbook -i "$REPO_DIR/hosts" "$REPO_DIR/main.yml" -t "zsh, role_config"
+  	ansible-playbook -i "$REPO_DIR/hosts" "$REPO_DIR/main.yml" -t "zsh, role_config"
 }
 
 function MAIN()

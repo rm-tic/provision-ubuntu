@@ -38,12 +38,6 @@
   when: docker_is_installed.stdout != 0
   tags: docker
 
-- name: Teste
-  apt:
-    name: zsh
-    state: latest
-  tags: zsh
-
 - name: Install Oh My Zsh!
   shell: >
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
@@ -55,6 +49,13 @@
     name: "{{ ansible_env.SUDO_USER }}"
     shell: /usr/bin/zsh
   tags: zsh
+
+- name: Install Anki
+  snap:
+    name: anki-woodrow
+    state: present
+    channel: stable
+  tags: anki
 
 - name: Install VSCode
   snap:
@@ -76,6 +77,20 @@
     state: present
     channel: stable
   tags: heimer
+
+- name: Install OBS Studio
+  snap:
+    name: obs-studio
+    state: present
+    channel: stable
+  tags: obs
+
+- name: Install Postman
+  snap:
+    name: postman
+    state: present
+    channel: stable
+  tags: postman
 
 - name: Install scrcpy
   snap:

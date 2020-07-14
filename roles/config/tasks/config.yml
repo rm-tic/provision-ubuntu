@@ -1,24 +1,30 @@
 ---
-- name: Add Custom Config in .zshrc and .bashrc
+- name: Custom BASH Profile
   blockinfile:
-    path: "{{ ansible_env.HOME }}/{{ item }}"
+    path: "/home/{{ ansible_env.SUDO_USER }}/.bashrc"
     owner: "{{ ansible_env.SUDO_USER }}"
     group: "{{ ansible_env.SUDO_USER }}"
     mode: 0644
     backup: yes
     insertafter: EOF
-    marker_begin: "##### CUSTOM CONFIG #####"
+    marker_begin: "\n##### CUSTOM BASH PROFILE #####\n"
     marker_end: ""
     marker: "{mark}"
     block: |
 
       #GENERAL
-      export EDITOR='vim'
+      export EDITOR="vim"
+
+      #PS1
+      export PS1="\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]➜  \[\033[01;34m\]\w\[\033[00m\]\[
+      \033[01;33m\]\$(__git_ps1)\[\033[00m\] "
+
+      #HISTORY
       export HISTTIMEFORMAT='%Y/%m/%d %T  '
       export HISTSIZE=10000
       export HISTFILESIZE=20000
 
-      #Manpage Theme
+      #MANPAGE THEME
       export LESS_TERMCAP_mb=$'\e[1;31m'     
       export LESS_TERMCAP_md=$'\e[1;33m'     
       export LESS_TERMCAP_so=$'\e[01;44;37m' 
@@ -32,31 +38,105 @@
       alias pbcopy='xclip -selection clipboard' #Depends xclip package
       alias pbpaste='xclip -selection clipboard -o' #Depends xclip package
       alias ssh='ssh -o ServerAliveInterval=15'
-      alias crontab="VISUAL=vi crontab"
+      alias crontab='VISUAL=vi crontab'
       alias git='LANG="en_US" git'
+      alias getIP='dig @8.8.8.8 +short'
+      alias publicIP='curl ifconfig.so'
+      alias infoIP='curl ipinfo.io/'
 
       #FUNCTIONS
+      ss() { /bin/ss $@ | column -t ;}
+
       #TMUX
-      t3()
-      {
-        tmux new-session\; split-window -v -p 66\; split-window -v\; select-pane -t0
-      }
+      t3() { tmux new-session\; split-window -v -p 66\; split-window -v\; select-pane -t0 ;}
 
       t4()
       {
         tmux new-session \; split-window -v -p 50\; split-window -h\; select-pane -t0\; split-window -h\; select-pane -t0
       }
 
+  tags: bashrc
+
+- name: Custom ZSH Themes
+  blockinfile:
+    path: "/home/{{ ansible_env.SUDO_USER }}/.zshrc"
+    owner: "{{ ansible_env.SUDO_USER }}"
+    group: "{{ ansible_env.SUDO_USER }}"
+    mode: 0644
+    backup: yes
+    insertafter: ZSH_THEME="robbyrussel"
+    marker_begin: "##### CUSTOM ZSH THEMES #####"
+    marker_end: ""
+    marker: "{mark}"
+    block: |
+
+      #ZSH_THEME="bira"
+      #ZSH_THEME="pygmalion"
+      #ZSH_THEME="agnoster"
+      #ZSH_THEME="miloshadzic"
+      #ZSH_THEME="powerlevel9k/powerlevel9k"
+      #ZSH_THEME="gnzh"
+      #ZSH_THEME="lambda"
+
+  tags: zshrc
+
+
+- name: Custom ZSH Profile
+  blockinfile:
+    path: "/home/{{ ansible_env.SUDO_USER }}/.zshrc"
+    owner: "{{ ansible_env.SUDO_USER }}"
+    group: "{{ ansible_env.SUDO_USER }}"
+    mode: 0644
+    backup: yes
+    insertafter: EOF
+    marker_begin: "\n##### CUSTOM ZSH PROFILE #####\n"
+    marker_end: ""
+    marker: "{mark}"
+    block: |
+
+      #GENERAL
+      export EDITOR="vim"
+
+      #HISTORY
+      export HIST_STAMPS='%Y/%m/%d %T  '
+
+      #MANPAGE THEME
+      export LESS_TERMCAP_mb=$'\e[1;31m'     
+      export LESS_TERMCAP_md=$'\e[1;33m'     
+      export LESS_TERMCAP_so=$'\e[01;44;37m' 
+      export LESS_TERMCAP_us=$'\e[01;37m'    
+      export LESS_TERMCAP_me=$'\e[0m'        
+      export LESS_TERMCAP_se=$'\e[0m'        
+      export LESS_TERMCAP_ue=$'\e[0m'        
+      export GROFF_NO_SGR=1
+
+      #ALIAS
+      alias pbcopy='xclip -selection clipboard' #Depends xclip package
+      alias pbpaste='xclip -selection clipboard -o' #Depends xclip package
+      alias ssh='ssh -o ServerAliveInterval=15'
+      alias crontab='VISUAL=vi crontab'
+      alias git='LANG="en_US" git'
+      alias getIP='dig @8.8.8.8 +short'
+      alias publicIP='curl ifconfig.so'
+      alias infoIP='curl ipinfo.io/'
+
+      #FUNCTIONS
       ss() { /bin/ss $@ | column -t ;}
 
-  loop:
-    - .bashrc
-    - .zshrc
+      #TMUX
+      t3() { tmux new-session\; split-window -v -p 66\; split-window -v\; select-pane -t0 ;}
 
-- name: Copy Config Files .vimrc and .tmux.conf to HOME
+      t4()
+      {
+        tmux new-session \; split-window -v -p 50\; split-window -h\; select-pane -t0\; split-window -h\; select-pane -t0
+      }
+
+  tags: zshrc
+
+- name: Copy .vimrc and .tmux.conf to Home Path
   copy:
     src: "./{{ item }}"
-    dest: "{{ ansible_env.HOME }}/{{ item }}"
+    dest: "/home/{{ ansible_env.SUDO_USER }}/{{ item }}"
     owner: "{{ ansible_env.SUDO_USER }}"
     group: "{{ ansible_env.SUDO_USER }}"
     mode: 0644
@@ -64,9 +144,9 @@
     - .tmux.conf
     - .vimrc
 
-- name: Create Directory Wallpaper
+- name: Create Wallpaper Directory 
   file:
-    path: "{{ ansible_env.HOME }}/Imagens/Wallpapers"
+    path: "/home/{{ ansible_env.SUDO_USER }}/Imagens/Wallpapers"
     owner: "{{ ansible_env.SUDO_USER }}"
     group: "{{ ansible_env.SUDO_USER }}"
     mode: 0755
@@ -75,7 +155,7 @@
 - name: Copy Pictures to ~/Imagens/Wallpapers
   copy:
     src: "./{{ item }}"
-    dest: "{{ ansible_env.HOME }}/Imagens/Wallpapers/{{ item }}"
+    dest: "/home/{{ ansible_env.SUDO_USER }}/Imagens/Wallpapers/{{ item }}"
     owner: "{{ ansible_env.SUDO_USER }}"
     group: "{{ ansible_env.SUDO_USER }}"
     mode: 0644
@@ -83,7 +163,7 @@
     - root_2560x1080.png
     - root_1920x1080.png
 
-- name: Apply Theme
+- name: Apply Wallpaper
   dconf:
     key: "{{ item.key }}"
     value: "{{ item.value }}"
