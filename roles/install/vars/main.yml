@@ -15,10 +15,6 @@ apt_repo_urls:
     filename: enpass
 
 apt_repo_ppa:
-  - url: ppa:stebbins/handbrake-releases #Handbrake
-    filename: ppa_handbrake
-  - url: ppa:graphics-drivers/ppa #NvidiaDrivers
-    filename: ppa_graphics
   - url: ppa:sebastian-stenzel/cryptomator #Cryptomator
     filename: cryptomator
     
@@ -29,7 +25,6 @@ pkgs_urls:
   - https://download.teamviewer.com/download/linux/teamviewer_amd64.deb #TeamViewer
   - "{{ url_deb_vagrant.stdout }}" #Vagrant
   - "{{ url_deb_franz.stdout }}" #Franz
-  - http://wdl1.pcfg.cache.wpscdn.com/wpsdl/wpsoffice/download/linux/9604/wps-office_11.1.0.9604.XA_amd64.deb #WPSOffice
 
 pkgs:
   - awscli
@@ -38,10 +33,9 @@ pkgs:
   - cryptomator
   - enpass
   - flameshot
+  - flatpak
   - google-chrome-stable
   - gparted
-  - handbrake-cli
-  - handbrake-gtk
   - htop
   - intel-microcode
   - jq

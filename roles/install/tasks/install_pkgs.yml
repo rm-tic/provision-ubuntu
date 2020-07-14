@@ -50,56 +50,117 @@
     shell: /usr/bin/zsh
   tags: zsh
 
-- name: Install Anki
+- name: Flatpak | Add Flathub Repository
+  flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+
+- name: Flatpak | Install Celluloid
+  flatpak:
+    name: io.github.celluloid_player.Celluloid
+    state: present
+
+- name: Flatpak | Install handbrake
+  flatpak:
+    name: fr.handbrake.ghb
+    state: present
+
+- name: Flatpak | Install Steam
+  flatpak:
+    name: com.valvesoftware.Steam
+    state: present
+
+- name: Flatpak | Install WPS Office
+  flatpak:
+    name: com.wps.Office
+    state: present
+
+- name: Snap | Install Anki
   snap:
     name: anki-woodrow
     state: present
     channel: stable
   tags: anki
 
-- name: Install VSCode
+- name: Snap | Install Audacity
+  snap:
+    name: audacity
+    state: present
+    channel: stable
+  tags: audacity
+
+- name: Snap | Install Authy
+  snap:
+    name: authy
+    state: present
+    channel: beta
+  tags: authy
+
+- name: Snap | Install VSCode
   snap:
     name: code
     state: present
     classic: yes
   tags: code
 
-- name: Install Foliate
+- name: Snap | Install Discord
+  snap:
+    name: discord
+    state: present
+    channel: stable
+  tags: discord
+
+- name: Snap | Install Foliate
   snap:
     name: foliate
     state: present
     channel: stable
   tags: foliate
 
-- name: Install Heimer
+- name: Snap | Install GIMP
+  snap:
+    name: gimp
+    state: present
+    channel: stable
+  tags: gimp
+
+- name: Snap | Install Heimer
   snap:
     name: heimer
     state: present
     channel: stable
   tags: heimer
 
-- name: Install OBS Studio
+- name: Snap | Install Inkscape
+  snap:
+    name: inkscape
+    state: present
+    channel: stable
+  tags: inkscape
+
+- name: Snap | Install OBS Studio
   snap:
     name: obs-studio
     state: present
     channel: stable
   tags: obs
 
-- name: Install Postman
+- name: Snap | Install Postman
   snap:
     name: postman
     state: present
     channel: stable
   tags: postman
 
-- name: Install scrcpy
+- name: Snap | Install scrcpy
   snap:
     name: scrcpy
     state: present
     channel: stable
   tags: scrcpy
 
-- name: Install Skype
+- name: Snap | Install Skype
   snap:
     name: skype
     state: present
@@ -107,14 +168,14 @@
     classic: yes
   tags: skype
 
-- name: Install Typora
+- name: Snap | Install Typora
   snap:
     name: typora
     state: present
     channel: stable
   tags: typora
 
-- name: Install VLC
+- name: Snap | Install VLC
   snap:
     name: vlc
     state: present
