@@ -50,32 +50,6 @@
     shell: /usr/bin/zsh
   tags: zsh
 
-- name: Flatpak | Add Flathub Repository
-  flatpak_remote:
-    name: flathub
-    state: present
-    flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
-
-- name: Flatpak | Install Celluloid
-  flatpak:
-    name: io.github.celluloid_player.Celluloid
-    state: present
-
-- name: Flatpak | Install handbrake
-  flatpak:
-    name: fr.handbrake.ghb
-    state: present
-
-- name: Flatpak | Install Steam
-  flatpak:
-    name: com.valvesoftware.Steam
-    state: present
-
-- name: Flatpak | Install WPS Office
-  flatpak:
-    name: com.wps.Office
-    state: present
-
 - name: Snap | Install Anki
   snap:
     name: anki-woodrow
