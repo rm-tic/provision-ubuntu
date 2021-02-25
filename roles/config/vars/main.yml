@@ -3,3 +3,11 @@
 wallpaper:
 - key: /org/gnome/desktop/background/picture-uri #Wallpaper
   value: "'file:///home/{{ ansible_env.SUDO_USER }}/Imagens/Wallpapers/root.png'"
+
+config_files:
+- src: .bash_aliases
+  dest: /home/{{ ansible_env.SUDO_USER }}
+- src: .vimrc
+  dest: /home/{{ ansible_env.SUDO_USER }}
+- src: .tmux.conf
+  dest: /home/{{ ansible_env.SUDO_USER }}
