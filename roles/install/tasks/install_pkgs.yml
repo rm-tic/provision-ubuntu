@@ -27,6 +27,8 @@
 - name: Check Docker-CE is Installed
   shell: >
     [ "$(dpkg-query -W -f='${db:Status-Abbrev}' docker-ce 2>/dev/null | cut -c1-2)" = "ii" ] ; echo "$?"
+  args:
+    executable: /bin/bash
   register: docker_is_installed
   tags: docker
 
@@ -34,6 +36,7 @@
   shell: >
     curl -fsSL https://get.docker.com | bash -
   args:
+    executable: /bin/bash
     warn: no
   when: docker_is_installed.stdout != 0
   tags: docker
@@ -57,20 +60,6 @@
     channel: stable
   tags: anki
 
-- name: Snap | Install Audacity
-  snap:
-    name: audacity
-    state: present
-    channel: stable
-  tags: audacity
-
-- name: Snap | Install Authy
-  snap:
-    name: authy
-    state: present
-    channel: beta
-  tags: authy
-
 - name: Snap | Install VSCode
   snap:
     name: code
@@ -85,12 +74,12 @@
     channel: stable
   tags: discord
 
-- name: Snap | Install Foliate
+- name: Snap | Install Enpass
   snap:
-    name: foliate
+    name: enpass
     state: present
     channel: stable
-  tags: foliate
+  tags: enpass
 
 - name: Snap | Install GIMP
   snap:
@@ -98,20 +87,6 @@
     state: present
     channel: stable
   tags: gimp
-
-- name: Snap | Install Heimer
-  snap:
-    name: heimer
-    state: present
-    channel: stable
-  tags: heimer
-
-- name: Snap | Install Inkscape
-  snap:
-    name: inkscape
-    state: present
-    channel: stable
-  tags: inkscape
 
 - name: Snap | Install OBS Studio
   snap:
@@ -127,31 +102,9 @@
     channel: stable
   tags: postman
 
-- name: Snap | Install scrcpy
-  snap:
-    name: scrcpy
-    state: present
-    channel: stable
-  tags: scrcpy
-
-- name: Snap | Install Skype
-  snap:
-    name: skype
-    state: present
-    channel: stable
-    classic: yes
-  tags: skype
-
 - name: Snap | Install Typora
   snap:
     name: typora
     state: present
     channel: stable
   tags: typora
-
-- name: Snap | Install VLC
-  snap:
-    name: vlc
-    state: present
-    channel: stable
-  tags: vlc

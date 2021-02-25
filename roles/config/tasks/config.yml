@@ -151,14 +151,11 @@
 
 - name: Copy Pictures to ~/Imagens/Wallpapers
   copy:
-    src: "./{{ item }}"
-    dest: "/home/{{ ansible_env.SUDO_USER }}/Imagens/Wallpapers/{{ item }}"
+    src: root.png
+    dest: "/home/{{ ansible_env.SUDO_USER }}/Imagens/Wallpapers/root.png"
     owner: "{{ ansible_env.SUDO_USER }}"
     group: "{{ ansible_env.SUDO_USER }}"
     mode: 0644
-  loop:
-    - root_2560x1080.png
-    - root_1920x1080.png
 
 - name: Set Default Wallpaper
   dconf:
@@ -169,3 +166,15 @@
   loop: "{{ wallpaper }}"
   tags: install_themes
   
+- name: Create path /tmp/wps-fonts
+  file:
+    path: /tmp/wps-fonts
+    state: directory
+
+- name: Extract wps-fonts.tar.gz
+  unarchive:
+    src: wps-fonts.tar.gz
+    dest: /tmp/wps-fonts
+
+- name: Install WPS Fonts
+  script: /tmp/wps-fonts/install.sh
