@@ -67,6 +67,13 @@
     classic: yes
   tags: code
 
+- name: Snap | Install DBeaver
+  snap:
+    name: dbeaver-ce
+    state: present
+    channel: stable
+  tags: dbeaver
+
 - name: Snap | Install Discord
   snap:
     name: discord
@@ -81,6 +88,13 @@
     channel: stable
   tags: enpass
 
+- name: Snap | Install Flameshot
+  snap:
+    name: flameshot
+    state: present
+    channel: stable
+  tags: flameshot
+
 - name: Snap | Install GIMP
   snap:
     name: gimp
@@ -94,6 +108,13 @@
     state: present
     channel: stable
   tags: obs
+
+- name: Snap | Install OnlyOffice
+  snap:
+    name: onlyoffice-desktopeditors
+    state: present
+    channel: stable
+  tags: onlyoffice
 
 - name: Snap | Install Postman
   snap:

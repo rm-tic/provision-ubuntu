@@ -10,13 +10,13 @@ export HISTSIZE=10000
 export HISTFILESIZE=20000
 
 #MANPAGE THEME
-export LESS_TERMCAP_mb=$'\e[1;31m'     
-export LESS_TERMCAP_md=$'\e[1;33m'     
-export LESS_TERMCAP_so=$'\e[01;44;37m' 
-export LESS_TERMCAP_us=$'\e[01;37m'    
-export LESS_TERMCAP_me=$'\e[0m'        
-export LESS_TERMCAP_se=$'\e[0m'        
-export LESS_TERMCAP_ue=$'\e[0m'        
+export LESS_TERMCAP_mb=$'\e[1;31m'
+export LESS_TERMCAP_md=$'\e[1;33m'
+export LESS_TERMCAP_so=$'\e[01;44;37m'
+export LESS_TERMCAP_us=$'\e[01;37m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_ue=$'\e[0m'
 export GROFF_NO_SGR=1
 
 #ALIAS
@@ -26,10 +26,16 @@ alias ssh='ssh -o ServerAliveInterval=15'
 alias crontab='VISUAL=vi crontab'
 alias git='LANG="en_US" git'
 alias get-ip='dig @8.8.8.8 +short'
-alias get-ipub='curl ifconfig.so'
+alias get-public-ip='curl ifconfig.so'
 
 #FUNCTIONS
 ss() { /bin/ss $@ | column -t ;}
+
+getResolution(){
+while read -r file ; do
+    ffprobe -v quiet -show_format -show_streams -print_format json $file | jq -r '. | .format.filename,.streams[0].height' | tr '\n' ';' | awk -F';' '{print $1": "$2"p"}'
+done <<< $(ls -1 *.ts) | grep -P '[0-9]+p'
+}
 
 #TMUX
 t2() { tmux new-session\; split-window -v -p 50\; select-pane -t0 ;}

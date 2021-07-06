@@ -1,5 +1,4 @@
 ---
-
 - name: Adds Validation Keys for Additional Repositories
   apt_key:
     url: "{{ item }}"

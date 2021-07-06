@@ -58,5 +58,6 @@ function! UseSpaces()
   set smarttab      " Inserts blanks on a <Tab> key (as per sw, ts and sts).
 endfunction
 
-autocmd Filetype yaml call UseSpaces()
+autocmd Filetype sh call UseSpaces()
+autocmd Filetype yaml,yml call UseSpaces()
 autocmd Filetype tf call UseSpaces()
