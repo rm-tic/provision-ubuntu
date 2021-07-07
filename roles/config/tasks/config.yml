@@ -31,16 +31,3 @@
     state: present
   become_user: "{{ ansible_env.SUDO_USER }}"
   loop: "{{ wallpaper }}"
-  
-- name: Create path /tmp/wps-fonts
-  file:
-    path: /tmp/wps-fonts
-    state: directory
-
-- name: Extract wps-fonts.tar.gz
-  unarchive:
-    src: wps-fonts.tar.gz
-    dest: /tmp/wps-fonts
-
-- name: Install WPS Fonts
-  script: /tmp/wps-fonts/install.sh
