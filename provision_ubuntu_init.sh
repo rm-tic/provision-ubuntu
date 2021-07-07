@@ -15,19 +15,20 @@ function gterm_load()
     echo "0" > $GTERM_RC
     wget -qO $GTERM_FILE $GTERM_URL
 
-  # DCONF EXPORT
-  #dconf dump /org/gnome/terminal/legacy/profiles:/ > $GTERM_FILE
+    # DCONF Export
+    #dconf dump /org/gnome/terminal/legacy/profiles:/ > $GTERM_FILE
 
-  # DCONF IMPORT
+    # DCONF Import
     dconf load /org/gnome/terminal/legacy/profiles:/ < $GTERM_FILE
   fi
 }
 
 function packages_status()
 {
-  PKG="$(dpkg-query -W -f='${db:Status-Abbrev}' $1 2> /dev/null | cut -c 1-2)"
+  PACKAGE="$1"
+  PACKAGE_STATUS="$(dpkg-query -W -f='${db:Status-Abbrev}' $PACKAGE 2> /dev/null | cut -c 1-2)"
 
-  if [ "$PKG" = "ii" ]; then
+  if [ "$PACKAGE_STATUS" = "ii" ]; then
     echo "present"
   else
     echo "absent"
@@ -42,17 +43,15 @@ function apt_update()
   fi
 }
 
-function packages_setup()
-{
-  GIT_STATUS="$(CHECK_INSTALL git)"
-  PYTHON3_VIRTUALENV_STATUS="$(CHECK_INSTALL python3-virtualenv)"
-  CURL_STATUS="$(CHECK_INSTALL curl)"
+function packages_setup(){
+  GIT_STATUS="$(packages_status git)"
+  PYTHON3_VIRTUALENV_STATUS="$(packages_status python3-virtualenv)"
+  CURL_STATUS="$(packages_status curl)"
 
-  echo ">>> Installing essential packages..."
-  echo
+  echo ">>> Installing Essential Packages..."
 
   if [ "$CURL_STATUS" = "absent" ]; then
-    APT_UPDATE
+    apt_update
     sudo apt-get install -y curl > /dev/null 2>&1
     echo ">>> Essential Packages: curl installed."
   else
@@ -60,7 +59,7 @@ function packages_setup()
   fi
 
   if [ "$PYTHON3_VIRTUALENV_STATUS" = "absent" ]; then
-    APT_UPDATE
+    apt_update
     sudo apt-get install -y python3-virtualenv > /dev/null 2>&1
     echo ">>> Essential Packages: python3-virtualenv installed."
   else
@@ -68,58 +67,55 @@ function packages_setup()
   fi
 
   if [ "$GIT_STATUS" = "absent" ]; then
-    APT_UPDATE
+    apt_update
     sudo apt-get install -y git > /dev/null 2>&1
     echo ">>> Essential Packages: git installed."
   else
     echo ">>> Essential Packages: git is already installed."
+    echo
   fi
-
-  echo
 }
 
-function github_clone_repo()
-{
+function github_clone_repo(){
   REPO_DIR="/tmp/provision-ubuntu"
   REPO_URL="https://github.com/rm-tic/provision-ubuntu.git"
 
-  echo ">>> Cloning repository in $REPO_DIR"
-  git clone $REPO_URL $REPO_DIR > /dev/null 2>&1
+  echo ">>> Cloning repository in $REPO_DIR..."
   echo
+  git clone $REPO_URL $REPO_DIR > /dev/null 2>&1
 }
 
-function python_venv_create()
-{
-  python3 -m virtualenv "$REPO_DIR/.venv"
+function python_venv_create(){
+  echo ">>> Creating python3 virtualenv..."
+  echo
+  python3 -m virtualenv -q "$REPO_DIR/.venv"
 }
 
 function python_venv_activate()
 {
+  echo ">>> Enabling virtualenv..."
+  echo
   source "$REPO_DIR/.venv/bin/activate"
 }
 
-function python_venv_setup()
-{
+function python_venv_setup(){
   python3 -m pip install -U -r "$REPO_DIR/requirements.txt"
 }
 
 function ansible_collections(){
-  echo
   echo ">>> Ansible: Install community.general collection"
   echo
   ansible-galaxy collection install community.general
 }
 
-function ansible_run()
-{
+function ansible_run(){
   echo
   echo ">>> Ansible: Starting playbook..."
   echo
   ansible-playbook "$REPO_DIR/main.yml"
 }
 
-function main()
-{
+function main(){
   echo
   echo "+----------------------------------+"
   echo "| Invencible (Ansible)             |"
