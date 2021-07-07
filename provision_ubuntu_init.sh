@@ -2,7 +2,7 @@
 
 PLAY_USER="$USER"
 
-function GTERM_LOAD()
+function gterm_load()
 {
   GTERM_DIR="$HOME/.gterm"
   GTERM_FILE="$GTERM_DIR/gterm-profile.dconf"
@@ -15,15 +15,15 @@ function GTERM_LOAD()
     echo "0" > $GTERM_RC
     wget -qO $GTERM_FILE $GTERM_URL
 
-  #DCONF EXPORT
+  # DCONF EXPORT
   #dconf dump /org/gnome/terminal/legacy/profiles:/ > $GTERM_FILE
 
-  #DCONF IMPORT
+  # DCONF IMPORT
     dconf load /org/gnome/terminal/legacy/profiles:/ < $GTERM_FILE
   fi
 }
 
-function CHECK_INSTALL()
+function packages_status()
 {
   PKG="$(dpkg-query -W -f='${db:Status-Abbrev}' $1 2> /dev/null | cut -c 1-2)"
 
@@ -34,7 +34,7 @@ function CHECK_INSTALL()
   fi
 }
 
-function APT_UPDATE()
+function apt_update()
 {
   if [ "$UPDATE_RC" != "0" ]; then
     sudo apt-get update -qq
@@ -42,83 +42,83 @@ function APT_UPDATE()
   fi
 }
 
-function INSTALL()
+function packages_setup()
 {
   GIT_STATUS="$(CHECK_INSTALL git)"
-  PYTHON3_VENV_STATUS="$(CHECK_INSTALL python3-venv)"
+  PYTHON3_VIRTUALENV_STATUS="$(CHECK_INSTALL python3-virtualenv)"
   CURL_STATUS="$(CHECK_INSTALL curl)"
 
-  echo "Installing Essential Packages..."
+  echo ">>> Installing essential packages..."
   echo
 
   if [ "$CURL_STATUS" = "absent" ]; then
     APT_UPDATE
     sudo apt-get install -y curl > /dev/null 2>&1
-    echo ">> curl installed."
+    echo ">>> Essential Packages: curl installed."
   else
-    echo ">> curl is already installed."
+    echo ">>> Essential Packages: curl is already installed."
   fi
 
-  if [ "$PYTHON3_VENV_STATUS" = "absent" ]; then
+  if [ "$PYTHON3_VIRTUALENV_STATUS" = "absent" ]; then
     APT_UPDATE
     sudo apt-get install -y python3-virtualenv > /dev/null 2>&1
-    echo ">> python3-venv installed."
+    echo ">>> Essential Packages: python3-virtualenv installed."
   else
-    echo ">> python3-venv is already installed."
+    echo ">>> Essential Packages: python3-virtualenv is already installed."
   fi
 
   if [ "$GIT_STATUS" = "absent" ]; then
     APT_UPDATE
     sudo apt-get install -y git > /dev/null 2>&1
-    echo ">> Git v$(git --version | awk '{print $3}') installed."
+    echo ">>> Essential Packages: git installed."
   else
-    echo ">> Git is already installed."
+    echo ">>> Essential Packages: git is already installed."
   fi
 
   echo
 }
 
-function CLONE_REPO()
+function github_clone_repo()
 {
   REPO_DIR="/tmp/provision-ubuntu"
   REPO_URL="https://github.com/rm-tic/provision-ubuntu.git"
 
-  echo "Cloning Repository in $REPO_DIR"
+  echo ">>> Cloning repository in $REPO_DIR"
   git clone $REPO_URL $REPO_DIR > /dev/null 2>&1
   echo
 }
 
-function CREATE_VENV()
+function python_venv_create()
 {
   python3 -m virtualenv "$REPO_DIR/.venv"
 }
 
-function ENABLE_VENV()
+function python_venv_activate()
 {
   source "$REPO_DIR/.venv/bin/activate"
 }
 
-function SETUP_VENV()
+function python_venv_setup()
 {
   python3 -m pip install -U -r "$REPO_DIR/requirements.txt"
 }
 
-function ANSIBLE_COLLECTION(){
+function ansible_collections(){
   echo
-  echo "Install community.general collection"
+  echo ">>> Ansible: Install community.general collection"
   echo
   ansible-galaxy collection install community.general
 }
 
-function EXEC_ANSIBLE()
+function ansible_run()
 {
   echo
-  echo "Starting Playbook..."
+  echo ">>> Ansible: Starting playbook..."
   echo
   ansible-playbook "$REPO_DIR/main.yml"
 }
 
-function MAIN()
+function main()
 {
   echo
   echo "+----------------------------------+"
@@ -131,14 +131,14 @@ function MAIN()
   echo
 
   #Exec Functions
-  GTERM_LOAD
-  INSTALL
-  CLONE_REPO
-  CREATE_VENV
-  ENABLE_VENV
-  SETUP_VENV
-  ANSIBLE_COLLECTION
-  EXEC_ANSIBLE
+  gterm_load
+  packages_setup
+  github_clone_repo
+  python_venv_create
+  python_venv_activate
+  python_venv_setup
+  ansible_collections
+  ansible_run
 }
 
-MAIN
+main
