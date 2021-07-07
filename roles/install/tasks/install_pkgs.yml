@@ -57,14 +57,11 @@
   snap:
     name: anki-woodrow
     state: present
-    channel: stable
   tags: anki
 
 - name: Snap | Install VSCode
-  snap:
-    name: code
-    state: present
-    classic: yes
+  shell: >
+    sudo snap install code --classic
   tags: code
 
 - name: Snap | Install DBeaver

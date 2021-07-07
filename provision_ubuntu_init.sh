@@ -46,7 +46,6 @@ function INSTALL()
 {
   GIT_STATUS="$(CHECK_INSTALL git)"
   PYTHON3_VENV_STATUS="$(CHECK_INSTALL python3-venv)"
-  PYTHON3_PSUTIL_STATUS="$(CHECK_INSTALL python3-psutil)"
   CURL_STATUS="$(CHECK_INSTALL curl)"
 
   echo "Installing Essential Packages..."
@@ -66,14 +65,6 @@ function INSTALL()
     echo ">> python3-venv installed."
   else
     echo ">> python3-venv is already installed."
-  fi
-
-  if [ "$PYTHON3_PSUTIL_STATUS" = "absent" ]; then
-    APT_UPDATE
-    sudo apt-get install -y python3-psutil > /dev/null 2>&1
-    echo ">> python3-psutil installed."
-  else
-    echo ">> python3-psutil is already installed."
   fi
 
   if [ "$GIT_STATUS" = "absent" ]; then
@@ -112,6 +103,13 @@ function SETUP_VENV()
   python3 -m pip install -U -r "$REPO_DIR/requirements.txt"
 }
 
+function ANSIBLE_COLLECTION(){
+  echo
+  echo "Install community.general collection"
+  echo
+  ansible-galaxy collection install community.general
+}
+
 function EXEC_ANSIBLE()
 {
   echo
@@ -127,7 +125,7 @@ function MAIN()
   echo "| Invencible (Ansible)             |"
   echo "| Project: provision-ubuntu        |"
   echo "| Author: Rodrigo Martins (IceTux) |"
-  echo "| Creation Date: 2021-07-05        |"
+  echo "| Creation Date: 2021-07-07        |"
   echo "+----------------------------------+"
   echo
   echo
@@ -139,6 +137,7 @@ function MAIN()
   CREATE_VENV
   ENABLE_VENV
   SETUP_VENV
+  ANSIBLE_COLLECTION
   EXEC_ANSIBLE
 }
 
