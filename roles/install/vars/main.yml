@@ -22,7 +22,6 @@ pkgs:
   - calibre
   - celluloid
   - curl
-  - gnome-tweaks
   - google-chrome-stable
   - gparted
   - handbrake
