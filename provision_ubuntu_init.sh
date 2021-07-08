@@ -70,6 +70,7 @@ function packages_setup(){
     apt_update
     sudo apt-get install -y git > /dev/null 2>&1
     echo ">>> Essential Packages: git installed."
+    echo
   else
     echo ">>> Essential Packages: git is already installed."
     echo
@@ -87,7 +88,6 @@ function github_clone_repo(){
 
 function python_venv_create(){
   echo ">>> Creating python3 virtualenv..."
-  echo
   python3 -m virtualenv -q "$REPO_DIR/.venv"
 }
 
@@ -99,17 +99,18 @@ function python_venv_activate()
 }
 
 function python_venv_setup(){
-  python3 -m pip install -U -r "$REPO_DIR/requirements.txt"
+  echo ">>> Installing playbook dependencies via pip..."
+  echo
+  python3 -m pip -q install -U -r "$REPO_DIR/requirements.txt"
 }
 
 function ansible_collections(){
   echo ">>> Ansible: Install community.general collection"
   echo
-  ansible-galaxy collection install community.general
+  ansible-galaxy collection install community.general &>/dev/null
 }
 
 function ansible_run(){
-  echo
   echo ">>> Ansible: Starting playbook..."
   echo
   ansible-playbook "$REPO_DIR/main.yml"
