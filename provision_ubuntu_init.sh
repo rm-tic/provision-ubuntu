@@ -1,9 +1,10 @@
 #!/bin/bash
 
-PLAY_USER="$USER"
+# Author: Rodrigo Martins
+# E-mail: rodrigomartins.tic@gmail.com
 
-function gterm_load()
-{
+
+function gterm_load(){
   GTERM_DIR="$HOME/.gterm"
   GTERM_FILE="$GTERM_DIR/gterm-profile.dconf"
   GTERM_RC="$GTERM_DIR/gterm.rc"
@@ -23,8 +24,7 @@ function gterm_load()
   fi
 }
 
-function packages_status()
-{
+function packages_status(){
   PACKAGE="$1"
   PACKAGE_STATUS="$(dpkg-query -W -f='${db:Status-Abbrev}' $PACKAGE 2> /dev/null | cut -c 1-2)"
 
@@ -35,8 +35,7 @@ function packages_status()
   fi
 }
 
-function apt_update()
-{
+function apt_update(){
   if [ "$UPDATE_RC" != "0" ]; then
     sudo apt-get update -qq
     UPDATE_RC="0"
@@ -91,8 +90,7 @@ function python_venv_create(){
   python3 -m virtualenv -q "$REPO_DIR/.venv"
 }
 
-function python_venv_activate()
-{
+function python_venv_activate(){
   echo ">>> Enabling virtualenv..."
   echo
   source "$REPO_DIR/.venv/bin/activate"
@@ -117,6 +115,10 @@ function ansible_run(){
 }
 
 function main(){
+
+  # Force run as root user
+  [ `whoami` = root ] || { sudo "$0" "$@"; exit $?; }
+
   echo
   echo "+----------------------------------+"
   echo "| Invencible (Ansible)             |"
@@ -127,7 +129,7 @@ function main(){
   echo
   echo
 
-  #Exec Functions
+  # Load Functions
   gterm_load
   packages_setup
   github_clone_repo
