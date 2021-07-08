@@ -31,3 +31,9 @@
     state: present
   become_user: "{{ ansible_env.SUDO_USER }}"
   loop: "{{ wallpaper }}"
+
+- name: Set vim as Default Editor
+  lineinfile:
+    path: /etc/environment
+    line: "EDITOR=vim"
+    state: present

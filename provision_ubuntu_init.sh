@@ -43,6 +43,10 @@ function apt_update(){
 }
 
 function packages_setup(){
+
+  # Force run as root user
+  [ `whoami` = root ] || { sudo "$0" "$@"; exit $?; }
+
   GIT_STATUS="$(packages_status git)"
   PYTHON3_VIRTUALENV_STATUS="$(packages_status python3-virtualenv)"
   CURL_STATUS="$(packages_status curl)"
@@ -105,7 +109,7 @@ function python_venv_setup(){
 function ansible_collections(){
   echo ">>> Ansible: Install community.general collection"
   echo
-  ansible-galaxy collection install community.general &>/dev/null
+  ansible-galaxy collection install community.general > /dev/null 2>&1
 }
 
 function ansible_run(){
@@ -116,15 +120,12 @@ function ansible_run(){
 
 function main(){
 
-  # Force run as root user
-  [ `whoami` = root ] || { sudo "$0" "$@"; exit $?; }
-
   echo
   echo "+----------------------------------+"
   echo "| Invencible (Ansible)             |"
   echo "| Project: provision-ubuntu        |"
   echo "| Author: Rodrigo Martins (IceTux) |"
-  echo "| Creation Date: 2021-07-07        |"
+  echo "| Creation Date: 2021-07-08        |"
   echo "+----------------------------------+"
   echo
   echo
