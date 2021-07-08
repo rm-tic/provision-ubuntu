@@ -37,15 +37,12 @@ function packages_status(){
 
 function apt_update(){
   if [ "$UPDATE_RC" != "0" ]; then
-    sudo apt-get update -qq
+    sh_c 'apt-get update -qq'
     UPDATE_RC="0"
   fi
 }
 
 function packages_setup(){
-
-  # Force run as root user
-  [ `whoami` = root ] || { sudo "$0" "$@"; exit $?; }
 
   GIT_STATUS="$(packages_status git)"
   PYTHON3_VIRTUALENV_STATUS="$(packages_status python3-virtualenv)"
@@ -55,7 +52,7 @@ function packages_setup(){
 
   if [ "$CURL_STATUS" = "absent" ]; then
     apt_update
-    sudo apt-get install -y curl > /dev/null 2>&1
+    sh_c 'apt-get install -y curl > /dev/null 2>&1'
     echo ">>> Essential Packages: curl installed."
   else
     echo ">>> Essential Packages: curl is already installed."
@@ -63,7 +60,7 @@ function packages_setup(){
 
   if [ "$PYTHON3_VIRTUALENV_STATUS" = "absent" ]; then
     apt_update
-    sudo apt-get install -y python3-virtualenv > /dev/null 2>&1
+    sh_c 'apt-get install -y python3-virtualenv > /dev/null 2>&1'
     echo ">>> Essential Packages: python3-virtualenv installed."
   else
     echo ">>> Essential Packages: python3-virtualenv is already installed."
@@ -71,7 +68,7 @@ function packages_setup(){
 
   if [ "$GIT_STATUS" = "absent" ]; then
     apt_update
-    sudo apt-get install -y git > /dev/null 2>&1
+    sh_c 'apt-get install -y git > /dev/null 2>&1'
     echo ">>> Essential Packages: git installed."
     echo
   else
@@ -119,6 +116,12 @@ function ansible_run(){
 }
 
 function main(){
+
+  if [ "$(id -un)" = "root" ]; then
+    sh_c="sh -c"
+  else
+    sh_c="sudo sh -c"
+  fi
 
   echo
   echo "+----------------------------------+"
