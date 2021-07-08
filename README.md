@@ -18,7 +18,9 @@ Esta receita provisiona uma estação de trabalho recém formatada com Ubuntu 20
 
 **SHELL**
 ```bash
-wget -qO- https://raw.githubusercontent.com/rm-tic/provision-ubuntu/master/provision_ubuntu_init.sh | bash -
+wget -q https://raw.githubusercontent.com/rm-tic/provision-ubuntu/master/provision_ubuntu_init.sh -O /tmp/provision_ubuntu_init.sh && \
+chmod +x /tmp/provision_ubuntu_init.sh && \
+/tmp/provision_ubuntu_init.sh
 ```
 
 
