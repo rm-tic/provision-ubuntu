@@ -28,6 +28,7 @@ pkgs:
   - htop
   - imagemagick
   - jq
+  - lm-sensors
   - openssh-server
   - p7zip-full
   - p7zip-rar
